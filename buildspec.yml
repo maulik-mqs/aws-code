@@ -1,0 +1,80 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      docker: 18
+    commands:
+      - echo "Installing dependencies..."
+  pre_build:
+    commands:
+      - echo "Starting the pre-build phase..."
+      - echo "Checking out the source code..."
+      - echo "bhaiyya code clone ho gaya"  # The code is already cloned by CodePipeline
+  build:
+    commands:
+      - echo "Starting the build phase..."
+      - echo "Building the Docker image..."
+      - docker build -t node-app-test-new .
+      - echo "code build bhi ho gaya"
+  post_build:
+    commands:
+      - echo "Starting the post-build phase..."
+      - echo "Scanning the Docker image..."
+      - echo "image scanning ho gayi"
+      - echo "Pushing the Docker image to Docker Hub..."
+      - echo "Logging in to Docker Hub..."
+      - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
+      - echo "Tagging the Docker image..."
+      - docker tag node-app-test-new:latest ${DOCKERHUB_USERNAME}/node-app-test-new:latest
+      - echo "Pushing the Docker image..."
+      - docker push ${DOCKERHUB_USERNAME}/node-app-test-new:latest
+      -
+
+
+
+
+# version: 0.2
+
+# phases:
+#   install:
+#     runtime-versions:
+#       docker: 18
+#   pre_build:
+#     commands:
+#       - echo "Starting the pre-build phase..."
+#       - echo "Cloning the repository..."
+#       - git clone -b master https://github.com/LondheShubham153/node-todo-cicd.git
+#       - cd node-todo-cicd
+#       - echo "bhaiyya code clone ho gaya"
+#   build:
+#     commands:
+#       - echo "Starting the build phase..."
+#       - echo "Building the Docker image..."
+#       - docker build -t node-app-test-new .
+#       - echo "code build bhi ho gaya"
+#   post_build:
+#     commands:
+#       - echo "Starting the post-build phase..."
+#       - echo "Scanning the Docker image..."
+#       - echo "image scanning ho gayi"
+#       - echo "Pushing the Docker image to Docker Hub..."
+#       - echo "Logging in to Docker Hub..."
+#       - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
+#       - echo "Tagging the Docker image..."
+#       - docker tag node-app-test-new:latest ${DOCKERHUB_USERNAME}/node-app-test-new:latest
+#       - echo "Pushing the Docker image..."
+#       - docker push ${DOCKERHUB_USERNAME}/node-app-test-new:latest
+#       - echo "image push ho gaya"
+#       - echo "Deploying the Docker image..."
+#       - docker-compose down && docker-compose up -d
+#       - echo "deployment ho gayi"
+
+# env:
+#   variables:
+#     DOCKERHUB_USERNAME: "<your-dockerhub-username>"
+#     DOCKERHUB_PASSWORD: "<your-dockerhub-password>"
+
+# artifacts:
+#   files:
+#     - '**/*'
