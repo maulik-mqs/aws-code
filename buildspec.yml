@@ -17,6 +17,7 @@ phases:
       - echo "Building the Docker image..."
       - docker build -t node-app-test-new .
       - echo "code build bhi ho gaya"
+      - echo "code build bhi ho gaya"
   post_build:
     commands:
       - echo "Starting the post-build phase..."
