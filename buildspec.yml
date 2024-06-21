@@ -31,8 +31,7 @@ phases:
 env:
   variables:
     DOCKERHUB_USERNAME: maulikmqs
-    DOCKERHUB_PASSWORD: P4Vp?ZqK9cr+Aiz
-
+ 
 artifacts:
   files:
     - '**/*'
