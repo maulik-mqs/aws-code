@@ -2,38 +2,31 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      python: 3.x
     commands:
       - echo "Installing Docker..."
       - curl -fsSL https://get.docker.com -o get-docker.sh
       - sh get-docker.sh
-      - echo "Docker installation completed"
+      - echo "Installing Docker Compose..."
+      - sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+      - sudo chmod +x /usr/local/bin/docker-compose
+      - sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+      - docker-compose version
   pre_build:
     commands:
-      - echo "Starting the pre-build phase..."
-      - echo "Checking out the source code..."
-      - echo "bhaiyya code clone ho gaya"  # The code is already cloned by CodePipeline
+      - echo "Logging in to Docker Hub..."
+      - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
   build:
     commands:
-      - echo "Starting the build phase..."
-      - echo "Building the Docker image..."
-      - docker build -t node-app-test-new .
-      - echo "code build bhi ho gaya"
+      - echo "Building Docker images..."
+      - docker-compose build
   post_build:
     commands:
-      - echo "Starting the post-build phase..."
-      - echo "Scanning the Docker image..."
-      - echo "image scanning ho gayi"
-      - echo "Pushing the Docker image to Docker Hub..."
-      - - echo  -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} "Logging in to Docker Hub..."
-      - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
-      - echo "Tagging the Docker image..."
-      - docker tag node-app-test-new:latest ${DOCKERHUB_USERNAME}/node-app-test-new:latest
-      - echo "Pushing the Docker image..."
-      - docker push ${DOCKERHUB_USERNAME}/node-app-test-new:latest
-      - echo "image push ho gaya"
-      - echo "Deploying the Docker image..."
-      - docker-compose down && docker-compose up -d
-      - echo "deployment ho gayi"
+      - echo "Starting Docker containers..."
+      - docker-compose down
+      - docker-compose up -d
+      - echo "Deployment completed."
 
 env:
   variables:

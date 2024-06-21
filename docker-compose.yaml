@@ -1,7 +1,22 @@
-version: '3.9'
+# version: '3.9'
 
+# services:
+#   web:
+#     image: "trainwithshubham/node-app-batch-6:latest"
+#     ports:
+#       - "8000:8000"
+version: '3.8'
 services:
-  web:
-    image: "trainwithshubham/node-app-batch-6:latest"
+
+  # Nginx container
+  nginx:
+    image: nginx:stable-alpine
+    container_name: demo-aws-nginx
+    restart: always
+    environment:
+      APP_HOST: demo-aws-host
+      APP_PORT:  8000
+      SERVER_NAME_NGINX: demo-server
+      EXPOSE_NGINX_PORT: 8000
     ports:
-      - "8000:8000"
+      - 8000:8000
