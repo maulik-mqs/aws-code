@@ -6,8 +6,7 @@ phases:
       - echo "Installing Docker..."
       - curl -fsSL https://get.docker.com -o get-docker.sh
       - sh get-docker.sh
-      - sudo usermod -aG docker $USER
-      - newgrp docker
+      - echo "Docker installation completed"
   pre_build:
     commands:
       - echo "Starting the pre-build phase..."
@@ -35,7 +34,12 @@ phases:
       - echo "Deploying the Docker image..."
       - docker-compose down && docker-compose up -d
       - echo "deployment ho gayi"
-      
+
+env:
+  variables:
+    DOCKERHUB_USERNAME: "maulikmqs"
+    DOCKERHUB_PASSWORD: "P4Vp?ZqK9cr+Aiz"
+
 artifacts:
   files:
     - '**/*'
