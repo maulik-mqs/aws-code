@@ -24,7 +24,7 @@ phases:
       - echo "Scanning the Docker image..."
       - echo "image scanning ho gayi"
       - echo "Pushing the Docker image to Docker Hub..."
-      - echo "Logging in to Docker Hub..."
+      - - echo  -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} "Logging in to Docker Hub..."
       - docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD}
       - echo "Tagging the Docker image..."
       - docker tag node-app-test-new:latest ${DOCKERHUB_USERNAME}/node-app-test-new:latest
@@ -37,8 +37,8 @@ phases:
 
 env:
   variables:
-    DOCKERHUB_USERNAME: "maulikmqs"
-    DOCKERHUB_PASSWORD: "P4Vp?ZqK9cr+Aiz"
+    DOCKERHUB_USERNAME: maulikmqs
+    DOCKERHUB_PASSWORD: P4Vp?ZqK9cr+Aiz
 
 artifacts:
   files:
